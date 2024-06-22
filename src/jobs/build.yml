@@ -97,6 +97,14 @@ parameters:
       Use it to pass arguments defined on your custom "build-method" or Unity's build options. Environment variables are supported.
       The parameters must be separated by space and must be in the format "-key value" or "-key" for booleans.
       Example: "-customArg1 WebGL -EnableHeadlessMode -customArg2 $CIRCLE_WORKFLOW_ID".
+  run-upload-xcode:
+    type: boolean
+    default: false
+    description: Whether to run the upload-xcode script after the build which will create a commit / push to an xcode project repository specified in TARGET_REPO_URL.
+  target-repo-url:
+    type: string
+    default: "TARGET_REPO_URL"
+    description: "The environment variable containing the target xcode repository URL."
 
 executor: << parameters.executor >>
 
@@ -126,9 +134,11 @@ steps:
       no_output_timeout: << parameters.no_output_timeout>>
       build-method: <<parameters.build-method>>
       custom-parameters: <<parameters.custom-parameters>>
+      run-upload-xcode: << parameters.run-upload-xcode >>
+      target-repo-url: << parameters.target-repo-url >>      
   - when:
       condition: <<parameters.return-license>>
       steps:
         - return-license:
             unity-username-var-name: << parameters.unity-username-var-name >>
-            unity-password-var-name: << parameters.unity-password-var-name >>
+            unity-password-var-name: << parameters.unity-password-var-name >>       

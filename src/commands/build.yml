@@ -70,6 +70,14 @@ parameters:
       Use it to pass arguments defined on your custom "build-method" or Unity's build options. Environment variables are supported.
       The parameters must be separated by space and must be in the format "-key value" or "-key" for booleans.
       Example: "-customArg1 WebGL -EnableHeadlessMode -customArg2 $CIRCLE_WORKFLOW_ID".
+  run-upload-xcode:
+    type: boolean
+    default: false
+    description: Whether to run the upload-xcode script after the build which will create a commit / push to an xcode project repository specified in TARGET_REPO_URL.
+  target-repo-url:
+    type: string
+    default: "TARGET_REPO_URL"
+    description: "The environment variable containing the target xcode repository URL."
 
 steps:
   - run:
@@ -92,6 +100,13 @@ steps:
       key: unity-deps-{{ arch }}-<< parameters.cache-version >>-<<# parameters.include-branch-in-cache-key >>{{ .Branch }}-<</ parameters.include-branch-in-cache-key >>{{ checksum "<< parameters.project-path >>/Packages/packages-lock.json" }}
       paths:
         - << parameters.project-path >>/Library/
+
+  - when:
+      condition: << parameters.run-upload-xcode >>
+      steps:
+        - upload-xcode:
+            target-repo-url: "<< parameters.target-repo-url >>"
+
   - when:
       condition:
         and:

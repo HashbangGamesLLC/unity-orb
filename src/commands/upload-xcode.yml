@@ -1,0 +1,13 @@
+description: >
+  This command uploads the built Xcode project to a Git repository for Xcode Cloud Build.
+
+parameters:
+  target-repo-url:
+    type: string
+    default: "TARGET_REPO_URL"
+    description: "The environment variable containing the target xcode repository URL."
+
+steps:
+  - run:
+      name: Upload Xcode Project to Repo
+      command: << include(scripts/macos/upload-xcode.sh) >>

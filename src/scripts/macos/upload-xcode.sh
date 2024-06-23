@@ -20,7 +20,7 @@ GIT_SSH_COMMAND="ssh -i ~/.ssh/id_rsa" git clone "$TARGET_REPO_URL" target-repo
 echo "Cloning $TARGET_REPO_URL"
 
 # Checkout Target Repository
-git clone $TARGET_REPO_URL target-repo
+# git clone $TARGET_REPO_URL target-repo
 
 # Define the build path
 build_path="$unity_project_full_path/Builds/$PARAM_BUILD_TARGET"

@@ -10,4 +10,6 @@ parameters:
 steps:
   - run:
       name: Upload Xcode Project to Repo
+      environment:
+        TARGET_REPO_URL: << parameters.target-repo-url >>      
       command: << include(scripts/macos/upload-xcode.sh) >>

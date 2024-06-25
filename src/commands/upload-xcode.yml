@@ -6,10 +6,23 @@ parameters:
     type: string
     default: "TARGET_REPO_URL"
     description: "The environment variable containing the target xcode repository URL."
+  project-path:
+    type: string
+    default: "."
+    description: |
+      Enter the relative path of your Unity project.
+      This should be the directory that has an "Assets" folder inside it.
+  build-target:
+    type: string
+    description: |
+      The target platform of your build.
+      Accepted arguments vary with Unity's version and can be found in the docs: https://docs.unity3d.com/2021.2/Documentation/ScriptReference/BuildTarget.html
 
 steps:
   - run:
       name: Upload Xcode Project to Repo
       environment:
-        TARGET_REPO_URL: << parameters.target-repo-url >>      
+        TARGET_REPO_URL: << parameters.target-repo-url >>
+        PROJECT_PATH: << parameters.project-path >>
+        BUILD_TARGET: << parameters.build-target >>
       command: << include(scripts/macos/upload-xcode.sh) >>

@@ -106,6 +106,8 @@ steps:
       steps:
         - upload-xcode:
             target-repo-url: "<< parameters.target-repo-url >>"
+            build-target: << parameters.build-target >>
+            project-path: << parameters.project-path >>
 
   - when:
       condition:

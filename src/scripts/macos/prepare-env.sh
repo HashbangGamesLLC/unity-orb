@@ -11,8 +11,7 @@ printf '%s\n' "export UNITY_EDITOR_PATH=$unity_editor_path" >> "$BASH_ENV"
 check_and_install_rosetta() {
   if ! /usr/bin/pgrep oahd &> /dev/null; then
     echo "Rosetta 2 is not installed. Installing it now..."
-    softwareupdate --install-rosetta --agree-to-license
-    if [ $? -eq 0 ]; then
+    if softwareupdate --install-rosetta --agree-to-license; then
       echo "Rosetta 2 installed successfully."
     else
       echo "Failed to install Rosetta 2."

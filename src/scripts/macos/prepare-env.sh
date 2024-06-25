@@ -58,7 +58,7 @@ check_and_install_unity_editor() {
       changeset="$(npx unity-changeset "$UNITY_EDITOR_VERSION")"
 
       set -x
-      arch -x86_64 "$unity_hub_path" -- --headless install --version "$UNITY_EDITOR_VERSION" --changeset "$changeset" --module mac-il2cpp --module ios --childModules  -a arm64
+      arch -x86_64 "$unity_hub_path" -- --headless install --version "$UNITY_EDITOR_VERSION" --changeset "$changeset" --module mac-il2cpp --childModules -a arm64
       set +x
 
       if [ -f "$unity_editor_path" ]; then
@@ -88,13 +88,13 @@ resolve_unity_serial() {
     # License provided.
     elif [ -n "$unity_encoded_license" ]; then
       printf '%s\n' "No serial detected. Extracting it from the encoded license."
-      
+
       if ! extract_serial_from_license; then
         printf '%s\n' "Failed to parse the serial from the Unity license."
         printf '%s\n' "Please try again or open an issue."
         printf '%s\n' "See the docs for more details: https://game.ci/docs/circleci/activation#personal-license"
         return 1
-      
+
       else
         readonly resolved_unity_serial="$decoded_unity_serial"
       fi
@@ -115,7 +115,7 @@ extract_serial_from_license() {
   # Fix locale setting in PERL.
   # https://stackoverflow.com/a/7413863
   export LC_CTYPE=en_US.UTF-8
-  export LC_ALL=en_US.UTF-8 
+  export LC_ALL=en_US.UTF-8
 
   local unity_license
   local developer_data
@@ -124,7 +124,7 @@ extract_serial_from_license() {
   unity_license="$(base64 --decode <<< "$unity_encoded_license")"
   developer_data="$(perl -nle 'print $& while m{<DeveloperData Value\="\K.*?(?="/>)}g' <<< "$unity_license")"
   encoded_serial="$(cut -c 5- <<< "$developer_data")"
-  
+
   decoded_unity_serial="$(base64 --decode <<< "$encoded_serial")"
   readonly decoded_unity_serial
 
